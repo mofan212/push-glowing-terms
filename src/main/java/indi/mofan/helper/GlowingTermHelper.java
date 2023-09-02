@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import indi.mofan.properties.tianapi.TianApiProperties;
 import indi.mofan.resolver.RestResolver;
 import indi.mofan.util.JsonNodeUtil;
+import indi.mofan.util.TianApiUtil;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -26,13 +27,12 @@ public class GlowingTermHelper {
         return RestResolver.from(
                 GLOWING_TERM_TEMPLATE,
                 apiProperties.toApiKeyMap(),
-                resp -> JsonNodeUtil.hasTargetIntegerValue(resp, "code", 200),
+                TianApiUtil::isSuccess,
                 this::getContent
         ).get();
     }
 
     private Optional<String> getContent(JsonNode resp) {
-        return JsonNodeUtil.getObjectValue(resp, "result")
-                .flatMap(i -> JsonNodeUtil.getStringValue(i, "content"));
+        return TianApiUtil.getRespResult(resp).flatMap(i -> JsonNodeUtil.getStringValue(i, "content"));
     }
 }

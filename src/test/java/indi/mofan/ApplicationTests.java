@@ -1,8 +1,10 @@
 package indi.mofan;
 
 import indi.mofan.helper.BaiduWeatherHelper;
+import indi.mofan.helper.EverydayEnglishHelper;
 import indi.mofan.helper.GlowingTermHelper;
 import indi.mofan.resp.baidu.weather.Weather;
+import indi.mofan.resp.tian.EverydayEnglish;
 import lombok.SneakyThrows;
 import org.assertj.core.api.WithAssertions;
 import org.jasypt.encryption.StringEncryptor;
@@ -21,6 +23,8 @@ class ApplicationTests implements WithAssertions {
     private BaiduWeatherHelper weatherHelper;
     @Autowired
     private GlowingTermHelper glowingTermHelper;
+    @Autowired
+    private EverydayEnglishHelper englishHelper;
 
     @Test
     public void testEncrypt() {
@@ -51,5 +55,16 @@ class ApplicationTests implements WithAssertions {
             Assertions.fail();
         }
         assertThat(optional.get()).isNotEmpty();
+    }
+
+    @Test
+    public void testGetEverydayEnglish() {
+        Optional<EverydayEnglish> optional = englishHelper.getEverydayEnglish();
+        if (optional.isEmpty()) {
+            Assertions.fail();
+        }
+        assertThat(optional.get()).isNotNull()
+                .extracting(EverydayEnglish::getContent, EverydayEnglish::getNote)
+                .doesNotContainNull();
     }
 }

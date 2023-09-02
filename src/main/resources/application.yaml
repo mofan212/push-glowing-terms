@@ -5,6 +5,10 @@ baidu:
         data-type: all
         ak: MOFAN(7BbFHke/bH3Bk6pi3a1EKmWYHbqwPRbg6jnY8IA0RM0Pua8Fz+vF3+SAWrRgAh3GqnrPaFUkZppf3l3XW2c9shJBYSl05yG5DT0WYAWjT54=)
 
+# 天聚数行配置（彩虹屁、每日英语）
+tian:
+    api-key: MOFAN(+cY2tWPTX0WTQm8fRAE65yU7xrcEjKf91CzQTUSteXBGge2NS1AxGU89Zy3ymiK6KhdFjPJh3ASiToNilAqxWYnnhyvR8lMUAjkfjyLAWI8=)
+
 jasypt:
     encryptor:
         property:

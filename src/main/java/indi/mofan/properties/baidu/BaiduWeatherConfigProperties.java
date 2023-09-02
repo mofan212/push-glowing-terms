@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Map;
+
 /**
  * @author mofan
  * @date 2023/9/2 14:02
@@ -33,4 +35,12 @@ public class BaiduWeatherConfigProperties {
      */
     @NotEmpty
     private String ak;
+
+    public Map<String, Object> toParamMap() {
+        return Map.of(
+                "district_id", this.districtId,
+                "data_type", this.dataType,
+                "ak", this.ak
+        );
+    }
 }

@@ -1,6 +1,7 @@
 package indi.mofan;
 
 import indi.mofan.helper.BaiduWeatherHelper;
+import indi.mofan.helper.GlowingTermHelper;
 import indi.mofan.resp.baidu.weather.Weather;
 import lombok.SneakyThrows;
 import org.assertj.core.api.WithAssertions;
@@ -15,12 +16,14 @@ import java.util.Optional;
 @SpringBootTest
 class ApplicationTests implements WithAssertions {
     @Autowired
+    private StringEncryptor encryptor;
+    @Autowired
     private BaiduWeatherHelper weatherHelper;
     @Autowired
-    private StringEncryptor encryptor;
+    private GlowingTermHelper glowingTermHelper;
 
     @Test
-    public void test() {
+    public void testEncrypt() {
         final String originPwd = "";
         String encryptedPwd = encryptor.encrypt(originPwd);
         Assertions.assertEquals(originPwd, encryptor.decrypt(encryptedPwd));
@@ -39,5 +42,14 @@ class ApplicationTests implements WithAssertions {
         assertThat(weather).isNotNull()
                 .extracting(Weather::getForecast)
                 .isNotNull();
+    }
+
+    @Test
+    public void testGetGlowingTerm() {
+        Optional<String> optional = glowingTermHelper.getGlowingTerm();
+        if (optional.isEmpty()) {
+            Assertions.fail();
+        }
+        assertThat(optional.get()).isNotEmpty();
     }
 }

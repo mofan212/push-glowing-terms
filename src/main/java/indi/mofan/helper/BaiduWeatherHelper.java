@@ -1,20 +1,17 @@
 package indi.mofan.helper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import indi.mofan.properties.baidu.BaiduProperties;
+import indi.mofan.resolver.RestResolver;
 import indi.mofan.resp.baidu.weather.Alert;
 import indi.mofan.resp.baidu.weather.Forecast;
 import indi.mofan.resp.baidu.weather.Index;
 import indi.mofan.resp.baidu.weather.Weather;
 import indi.mofan.util.JsonNodeUtil;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -36,29 +33,21 @@ public class BaiduWeatherHelper {
     }
 
     public Optional<Weather> getWeather() {
-        RestTemplate template = new RestTemplate();
-        Map<String, Object> param = mapper.convertValue(baiduProperties.getWeatherConfig(), new TypeReference<>() {
-        });
-        String resp = template.getForObject(WEATHER_TEMPLATE, String.class, param);
-        JsonNode tree;
-        try {
-            tree = mapper.readTree(resp);
-        } catch (JsonProcessingException e) {
-            return Optional.empty();
-        }
-        if (!JsonNodeUtil.hasTargetIntegerValue(tree, "status", 0)) {
-            return Optional.empty();
-        }
-        return JsonNodeUtil.getObjectValue(tree, "result").map(this::getWeather);
+        return RestResolver.from(
+                WEATHER_TEMPLATE,
+                baiduProperties.getWeatherConfig().toParamMap(),
+                resp -> JsonNodeUtil.hasTargetIntegerValue(resp, "status", 0),
+                resp -> JsonNodeUtil.getObjectValue(resp, "result").flatMap(this::getWeather)
+        ).get();
     }
 
-    private Weather getWeather(JsonNode tree) {
+    private Optional<Weather> getWeather(JsonNode tree) {
         // 首先解析天气预报
         Optional<JsonNode> forecastOptional = JsonNodeUtil.getArrayValue(tree, "forecasts").stream()
                 .flatMap(i -> StreamSupport.stream(i.spliterator(), false))
                 .findFirst();
         if (forecastOptional.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
         Forecast forecast = mapper.convertValue(forecastOptional.get(), Forecast.class);
         Weather weather = new Weather();
@@ -78,6 +67,6 @@ public class BaiduWeatherHelper {
                 .map(i -> mapper.convertValue(i, Alert.class))
                 .toList();
         weather.setAlerts(alerts);
-        return weather;
+        return Optional.of(weather);
     }
 }

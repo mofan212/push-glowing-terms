@@ -12,7 +12,8 @@ import java.util.List;
 @Getter
 @Setter
 public class Weather {
+    private CurrentWeather now;
+    private Forecast forecast;
     private List<Index> indexes;
     private List<Alert> alerts;
-    private Forecast forecast;
 }

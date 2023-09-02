@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import indi.mofan.properties.baidu.BaiduProperties;
 import indi.mofan.resolver.RestResolver;
 import indi.mofan.resp.baidu.weather.Alert;
+import indi.mofan.resp.baidu.weather.CurrentWeather;
 import indi.mofan.resp.baidu.weather.Forecast;
 import indi.mofan.resp.baidu.weather.Index;
 import indi.mofan.resp.baidu.weather.Weather;
@@ -42,16 +43,24 @@ public class BaiduWeatherHelper {
     }
 
     private Optional<Weather> getWeather(JsonNode tree) {
-        // 首先解析天气预报
-        Optional<JsonNode> forecastOptional = JsonNodeUtil.getArrayValue(tree, "forecasts").stream()
+        // 解析当前天气信息
+        Optional<CurrentWeather> nowOptional = JsonNodeUtil.getObjectValue(tree, "now")
+                .map(i -> mapper.convertValue(i, CurrentWeather.class));
+        if (nowOptional.isEmpty()) {
+            return Optional.empty();
+        }
+        // 解析天气预报
+        Optional<Forecast> forecastOptional = JsonNodeUtil.getArrayValue(tree, "forecasts").stream()
                 .flatMap(i -> StreamSupport.stream(i.spliterator(), false))
-                .findFirst();
+                .findFirst()
+                .map(i -> mapper.convertValue(i, Forecast.class));
         if (forecastOptional.isEmpty()) {
             return Optional.empty();
         }
-        Forecast forecast = mapper.convertValue(forecastOptional.get(), Forecast.class);
+
         Weather weather = new Weather();
-        weather.setForecast(forecast);
+        weather.setNow(nowOptional.get());
+        weather.setForecast(forecastOptional.get());
 
         // 解析 Index
         List<Index> indexes = JsonNodeUtil.getArrayValue(tree, "indexes").stream()

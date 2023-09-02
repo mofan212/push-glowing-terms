@@ -3,6 +3,7 @@ package indi.mofan;
 import indi.mofan.helper.BaiduWeatherHelper;
 import indi.mofan.helper.EverydayEnglishHelper;
 import indi.mofan.helper.GlowingTermHelper;
+import indi.mofan.push.WechatPusher;
 import indi.mofan.resp.baidu.weather.Weather;
 import indi.mofan.resp.tian.EverydayEnglish;
 import lombok.SneakyThrows;
@@ -25,6 +26,8 @@ class ApplicationTests implements WithAssertions {
     private GlowingTermHelper glowingTermHelper;
     @Autowired
     private EverydayEnglishHelper englishHelper;
+    @Autowired
+    private WechatPusher pusher;
 
     @Test
     public void testEncrypt() {
@@ -44,7 +47,7 @@ class ApplicationTests implements WithAssertions {
         }
         Weather weather = optional.get();
         assertThat(weather).isNotNull()
-                .extracting(Weather::getForecast)
+                .extracting(Weather::getNow)
                 .isNotNull();
     }
 
@@ -66,5 +69,10 @@ class ApplicationTests implements WithAssertions {
         assertThat(optional.get()).isNotNull()
                 .extracting(EverydayEnglish::getContent, EverydayEnglish::getNote)
                 .doesNotContainNull();
+    }
+
+    @Test
+    public void testPush() {
+        pusher.push();
     }
 }

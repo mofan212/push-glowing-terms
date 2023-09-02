@@ -1,16 +1,26 @@
 # 百度天气配置
 baidu:
-    weather-config:
-        district-id: MOFAN(KvNwAzvQZiXMuRQTWs5ZhFIRw3OcNeiKC215YWfUVFKip85wRkzVuTaOaYnPog+P)
-        data-type: all
-        ak: MOFAN(7BbFHke/bH3Bk6pi3a1EKmWYHbqwPRbg6jnY8IA0RM0Pua8Fz+vF3+SAWrRgAh3GqnrPaFUkZppf3l3XW2c9shJBYSl05yG5DT0WYAWjT54=)
+  weather-config:
+    district-id: MOFAN(KvNwAzvQZiXMuRQTWs5ZhFIRw3OcNeiKC215YWfUVFKip85wRkzVuTaOaYnPog+P)
+    data-type: all
+    ak: MOFAN(7BbFHke/bH3Bk6pi3a1EKmWYHbqwPRbg6jnY8IA0RM0Pua8Fz+vF3+SAWrRgAh3GqnrPaFUkZppf3l3XW2c9shJBYSl05yG5DT0WYAWjT54=)
 
 # 天聚数行配置（彩虹屁、每日英语）
 tian:
-    api-key: MOFAN(+cY2tWPTX0WTQm8fRAE65yU7xrcEjKf91CzQTUSteXBGge2NS1AxGU89Zy3ymiK6KhdFjPJh3ASiToNilAqxWYnnhyvR8lMUAjkfjyLAWI8=)
+  api-key: MOFAN(+cY2tWPTX0WTQm8fRAE65yU7xrcEjKf91CzQTUSteXBGge2NS1AxGU89Zy3ymiK6KhdFjPJh3ASiToNilAqxWYnnhyvR8lMUAjkfjyLAWI8=)
+
+# 微信配置
+we-chat:
+  app-id: MOFAN(Qw2kC3TDAcYD11as+puNiazEQixQ14Oc/pTJ7VMNDj1bzjxlUNB351MzYiOEUPcos3rs4IkKkl9jrPUuqDqkyg==)
+  app-secret: MOFAN(elVp4RAHdTe3eqRulT+DTKJLAZa14f/1h9NbPXlqJ+eFk8XHFPaSccUpwIYH8e4xhA4E2V6lhdW5I8/KJHq6BV4FUtaFJ2J36X88KUHm2oo=)
+  template-id: MOFAN(4aSckognOfUBFy2SWJrvDu8vK/yyGKx02iw26TWo0Sg5ya0NmgUZQlgcEhZ0UDP6JqJMOaD1iEdzRSN6ODpXrSxvNm2P0vvEJmRpi41Km/o=)
+  to-user-id: MOFAN(k1roVnOCWQJqT9WbRFRsXoQPOIEQxi183HffRuIpCfy8F3HrzrMiI85dAuFrCyCD2S79f3K4t3CxpnPMOcEv/w==)
+
+your:
+  nickname: TEST
 
 jasypt:
-    encryptor:
-        property:
-            prefix: MOFAN(
-            suffix: )
+  encryptor:
+    property:
+      prefix: MOFAN(
+      suffix: )

@@ -1,0 +1,12 @@
+# 百度天气配置
+baidu:
+    weather-config:
+        district-id: MOFAN(KvNwAzvQZiXMuRQTWs5ZhFIRw3OcNeiKC215YWfUVFKip85wRkzVuTaOaYnPog+P)
+        data-type: all
+        ak: MOFAN(7BbFHke/bH3Bk6pi3a1EKmWYHbqwPRbg6jnY8IA0RM0Pua8Fz+vF3+SAWrRgAh3GqnrPaFUkZppf3l3XW2c9shJBYSl05yG5DT0WYAWjT54=)
+
+jasypt:
+    encryptor:
+        property:
+            prefix: MOFAN(
+            suffix: )
